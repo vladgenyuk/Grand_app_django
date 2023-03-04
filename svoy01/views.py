@@ -1,4 +1,8 @@
 import json
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -13,30 +17,13 @@ from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.views import View
 from django.views.generic import CreateView, TemplateView, ListView, DetailView, DeleteView, UpdateView
-# from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from .forms import *
 from .models import Category, PostImage, Profile, Messages, Chat
 from .models import product
-# from .serializers import ProductSe
 from .serializers import AllProductSerializer, DetailProductSerializer, PostImageSerializer
 
 paginate = 4
-
-# def home(request):
-#     contact_list = product.objects.all()
-#     paginator = Paginator(contact_list, 2)
-#     page_number = request.GET.get('page')
-#     page_obj = paginator.get_page(page_number)
-#     context = {
-#         "Category": Category.objects.all(),
-#         "Category_id": 1,
-#         'page_obj': page_obj,
-#     }
-#     return render(request, 'svoy01/main.html', context)
-
 
 class AllProducts(APIView):
 
@@ -126,36 +113,11 @@ class chats(ListView):
     def get_queryset(self):
         pass
 
-
-# class ProductView(ModelViewSet):
-#     queryset = product.objects.all()
-#     serializer_class = ProductSerializer
-
-
-# def post(request, Category_id):
-#     context = {
-#         "Category": Category.objects.all(),
-#         'CAtegory': Category.objects.get(id=Category_id),
-#         'product': product.objects.filter(cat_id=Category_id),
-#     }
-#     return render(request, 'svoy01/category.html', context)
-
-
-# def Product(request, product_slug, ):
-#     context = {
-#         "Category": Category.objects.all(),
-#         'Product': product.objects.get(slug=product_slug)
-#     }
-#     return render(request, 'svoy01/product.html', context)
-
 class ShowProduct(DetailView):
     model = product
     template_name = "svoy01/product.html"
     slug_url_kwarg = 'product_slug'
     context_object_name = "Product"
-
-    # def get_queryset(self):
-    #     return photos.objects.filter(cat_id=self.kwargs['Category_id'])
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -311,17 +273,6 @@ class PersonalArea(ListView):
 def logout_user(request):
     logout(request)
     return redirect('home')
-
-# def blog_view(request):
-#     posts = product.objects.all()
-#     return render(request, 'svoy01/blog.html', {"posts": posts})
-#
-# def detail_view(request, id):
-#     post = get_object_or_404(product, id=id)
-#     photos = PostImage.objects.filter(post=post)
-#     return render(request, 'svoy01/detail.html', {
-#         "post": post, "photos": photos,
-#     })
 
 
 def pageNotFound(request, exception):
